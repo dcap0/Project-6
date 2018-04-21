@@ -1,0 +1,24 @@
+{
+  "name": "project-6",
+  "version": "1.0.0",
+  "description": "web scraper",
+  "main": "scrapper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dcap0/Project-6.git"
+  },
+  "author": "Dennis Capone",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dcap0/Project-6/issues"
+  },
+  "homepage": "https://github.com/dcap0/Project-6#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "json2csv": "^4.1.2",
+    "request": "^2.85.0"
+  }
+}
