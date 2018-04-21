@@ -13,7 +13,8 @@ if (fs.existsSync(dataDir) === true){
     fs.mkdirSync(dataDir);
 };
 
-const requestObj = request('http://shirts4mike.com/shirts.php', function (error, response, body){
+
+request('http://shirts4mike.com/shirts.php', function (error, response, body){
     if(!error){
         let inventory = new Object();
         let shirtInv = inventory.shirts = [];
@@ -31,7 +32,11 @@ const requestObj = request('http://shirts4mike.com/shirts.php', function (error,
                 let thisObj = {"title":title, "price":price, "imgurl":imgUrl, "url":thisShirtUrl}
                 
                 shirtInv.push(thisObj);
-                console.log(inventory);
+                console.log(shirtInv.length);
+                
+                if (shirtInv.length === allShirts.length){
+                    waitingAround(inventory);
+                }
             })
         };
     } else if (error.code === 'ENOTFOUND'){
@@ -40,8 +45,9 @@ const requestObj = request('http://shirts4mike.com/shirts.php', function (error,
 
 })
 
-
-
+function waitingAround(data){
+    console.log(data);
+}
 
 
 //Title, Price, ImageURL, URL, and Time
