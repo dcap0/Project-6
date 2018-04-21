@@ -12,7 +12,7 @@ Create a scraper.js file that will contain your command line application. Your
                 If you’re unsure of how to get started, try googling ‘node scraper’ to get a feel for what a scraper is and what it does.
                 
                 • Scraping and Saving Data:
-        ◦ The scraper should get the price, title, url and image url from the product page and save this information into a CSV file.
+        ◦ The scraper should get the !price, !title, !url and image url from the product page and save this information into a CSV file.
         
         ◦ The information should be stored in an CSV file that is named for the date it was created, e.g. 2016-11-21.csv.
         
