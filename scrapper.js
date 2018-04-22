@@ -1,8 +1,6 @@
 const fs = require('fs');
 const cheerio = require('cheerio');
 const request = require('request');
-const j2cp = require('json2csv');
-
 
 const dataDir = './data';
 
@@ -15,10 +13,10 @@ if (fs.existsSync(dataDir) === true){
 };
 
 
-let thing = request('http://shirts4mike.com/shirts.php', function (error, response, body){
+request('http://shirts4mike.com/shirts.php', function (error, response, body){
     if(!error){
-        let inventory = new Object();
-        let shirtInv = inventory.shirts = [];
+        //let inventory = new Object();
+        let shirtInv = [];
         var $ = cheerio.load(body);
         let allShirts = $('.products').children();
         for(let i=0; i<allShirts.length; i++){
@@ -33,10 +31,9 @@ let thing = request('http://shirts4mike.com/shirts.php', function (error, respon
                 let thisObj = {"title":title, "price":price, "imgurl":imgUrl, "url":thisShirtUrl}
                 
                 shirtInv.push(thisObj);
-                console.log(shirtInv.length);
-                
+                               
                 if (shirtInv.length === allShirts.length){
-                    waitingAround(inventory);
+                    waitingAround(shirtInv);
                 }
             })
         };
@@ -47,27 +44,18 @@ let thing = request('http://shirts4mike.com/shirts.php', function (error, respon
 })
 
 function waitingAround(data){
-    //console.log(data);
+    let today = new Date();
+    let filePath = `./data/${today.getDate()}-${today.getMonth()}-${today.getFullYear()}`;
     let jsonData = JSON.stringify(data);
-    let csv = j2cp.parse(jsonData);
-    console.log(csv);
+    //console.log(jsonData)
+    if (fs.existsSync(filePath+'.json') === false){
+        fs.appendFile(filePath+'.json', jsonData, function(err){
+        if(err){throw err}
+        console.log('Creating JSON file...');
+        console.log('File Created!');
+    }
+    );
+    } else {console.log('file already exists');}
 
 }
 
-
-//Title, Price, ImageURL, URL, and Time
-
-/*JSON OBJECT 
-let inventory = {
-    "shirts":[
-        //0 {"title":"hellothere", "price":, "imgurl":"", "url":"", "time":""}
-        //1 {"title":"", "price":, "imgurl":"", "url":"", "time":""}
-        //2 {"title":"", "price":, "imgurl":"", "url":"", "time":""}
-        //3 {"title":"", "price":, "imgurl":"", "url":"", "time":""}
-    ]
-}
-In theory:
-inventory.shirts[0].title === "hellothere"
-
-
-*/
