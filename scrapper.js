@@ -1,6 +1,7 @@
 const fs = require('fs');
 const cheerio = require('cheerio');
 const request = require('request');
+const j2cp = require('json2csv');
 
 
 const dataDir = './data';
@@ -14,7 +15,7 @@ if (fs.existsSync(dataDir) === true){
 };
 
 
-request('http://shirts4mike.com/shirts.php', function (error, response, body){
+let thing = request('http://shirts4mike.com/shirts.php', function (error, response, body){
     if(!error){
         let inventory = new Object();
         let shirtInv = inventory.shirts = [];
@@ -46,7 +47,11 @@ request('http://shirts4mike.com/shirts.php', function (error, response, body){
 })
 
 function waitingAround(data){
-    console.log(data);
+    //console.log(data);
+    let jsonData = JSON.stringify(data);
+    let csv = j2cp.parse(jsonData);
+    console.log(csv);
+
 }
 
 
