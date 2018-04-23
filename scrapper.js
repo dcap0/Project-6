@@ -1,6 +1,7 @@
 const fs = require('fs');
 const cheerio = require('cheerio');
 const request = require('request');
+const Json2csvTransform = require('json2csv').Transform;
 
 const dataDir = './data';
 
@@ -51,11 +52,27 @@ function waitingAround(data){
     if (fs.existsSync(filePath+'.json') === false){
         fs.appendFile(filePath+'.json', jsonData, function(err){
         if(err){throw err}
-        console.log('Creating JSON file...');
+        console.log('Creating JSON file and converting to CSV');
         console.log('File Created!');
     }
     );
     } else {console.log('file already exists');}
 
+    const fields = ['title', 'price', 'imgurl', 'url'];
+    const opts = { fields };
+    const transformOpts = { highWaterMark: 16384, encoding: 'utf-8' };
+    
+    const input = fs.createReadStream(filePath+'.json', { encoding: 'utf8' });
+    const output = fs.createWriteStream(filePath+'.csv', { encoding: 'utf8' });
+    const json2csv = new Json2csvTransform(opts, transformOpts);
+    
+    const processor = input.pipe(json2csv).pipe(output);
+
+    try{
+        fs.unlinkSync(filePath+'.json');
+    } catch(err){
+        console.error(err);
+    }
+    
 }
 
